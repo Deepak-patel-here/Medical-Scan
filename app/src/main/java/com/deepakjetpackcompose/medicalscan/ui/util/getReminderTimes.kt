@@ -2,9 +2,19 @@ package com.deepakjetpackcompose.medicalscan.ui.util
 
 import java.util.Calendar
 
-fun getReminderTimes(frequency: Int): List<Calendar> {
+
+
+fun getReminderTimes(frequency: Int, testMode: Boolean = false): List<Calendar> {
     val times = mutableListOf<Calendar>()
     val now = Calendar.getInstance()
+
+    if (testMode) {
+        // In test mode, just fire a reminder 1 minute later
+        times.add(Calendar.getInstance().apply {
+            add(Calendar.MINUTE, 1)
+        })
+        return times
+    }
 
     when (frequency) {
         1 -> {
@@ -38,4 +48,5 @@ fun getReminderTimes(frequency: Int): List<Calendar> {
         it
     }
 }
+
 

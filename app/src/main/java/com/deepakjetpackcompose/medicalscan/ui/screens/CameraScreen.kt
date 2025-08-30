@@ -2,6 +2,8 @@ package com.deepakjetpackcompose.medicalscan.ui.screens
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.FocusMeteringAction
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,6 +47,23 @@ fun CameraScreen(
 
     var imageCapture: ImageCapture? by remember { mutableStateOf(null) }
     var camera: Camera? by remember { mutableStateOf(null) }
+
+
+    val imageLauncher= rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = {uri->
+            uri?.let{
+                try{
+                    val inputStream=context.contentResolver.openInputStream(it)
+                    val bitmap=BitmapFactory.decodeStream(inputStream)
+                    onImageCaptured(bitmap)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            }
+
+        }
+    )
     Box(modifier = Modifier.fillMaxSize()) {
         // Camera Preview
         AndroidView(
@@ -173,6 +193,32 @@ fun CameraScreen(
                 )
             }
         }
+
+        Box(
+            modifier = Modifier
+                .padding(bottom = 40.dp, end = 32.dp)
+                .align(Alignment.BottomEnd), // 👈 direct alignment inside parent
+            contentAlignment = Alignment.Center
+        ) {
+            IconButton(
+                onClick = {
+                    imageLauncher.launch("image/*")
+
+                },
+                modifier = Modifier
+                    .size(60.dp)
+                    .background(Color.White, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Photo,
+                    contentDescription = "Open Gallery",
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.Black
+                )
+            }
+        }
+
+
     }
 
 

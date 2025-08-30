@@ -15,6 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.deepakjetpackcompose.medicalscan.ui.model.Medicine
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,15 +88,28 @@ fun MedicineDetailScreen(
                     )
                     Divider()
                     Text(
+                        text = " Description : $description",
+                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
                         text = "Frequency per day: ${frequencyPerDay}",
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Start Date: ${startDate}",
+                        text = "Dosage: ${dosage}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "Stock Count: ${stockCount}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "Start Date: ${formatMillisToDate(startDate)}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
-                        text = "End Date: ${expiryDate}",
+                        text = "End Date: ${formatMillisToDate(expiryDate)}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -131,3 +147,7 @@ fun MedicineDetailScreen(
         }
     }
 }
+
+
+
+

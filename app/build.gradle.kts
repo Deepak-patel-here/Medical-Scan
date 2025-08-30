@@ -52,18 +52,7 @@ android {
         buildConfig=true
     }
 }
-tasks.register<Copy>("copyGoogleServices") {
-    val googleServicesPath: String? = project.findProperty("GOOGLE_SERVICES_PATH") as String?
-    googleServicesPath?.let {
-        from(it)
-        into("$projectDir/app/")
-        rename("google-services.json", "google-services.json")
-    }
-}
 
-tasks.named("preBuild") {
-    dependsOn("copyGoogleServices")
-}
 
 dependencies {
 
@@ -85,43 +74,42 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //room
-    val room_version = "2.7.2"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:${room_version}")
-    ksp("androidx.room:room-compiler:$room_version")
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    //hilt
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    kapt("com.google.dagger:hilt-android-compiler:2.56.2")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+// Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
 
-    //navigations
-    val nav_version = "2.9.1"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+// Navigation
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
-    //lottie animation
-    implementation("com.airbnb.android:lottie-compose:6.6.2")
+// Lottie
+    implementation(libs.lottie.compose)
 
-    //extended icon
-    implementation("androidx.compose.material:material-icons-extended:1.7.8") // or latest
+// Extended Material Icons
+    implementation(libs.material.icons.extended)
 
-    //camera x
-    implementation("androidx.camera:camera-core:1.3.4")
-    implementation("androidx.camera:camera-camera2:1.3.4")
-    implementation("androidx.camera:camera-lifecycle:1.3.4")
-    implementation("androidx.camera:camera-view:1.3.4")
+// CameraX
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
 
-    //image to text
-    implementation("com.google.mlkit:text-recognition:16.0.0")
+// ML Kit
+    implementation(libs.mlkit.text.recognition)
 
-    //runtime request
-    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+
+    implementation(libs.accompanist.permissions.v0373)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
 
 
 
