@@ -13,6 +13,7 @@ class PermissionViewModel @Inject constructor(): ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     fun dismissDialog(){
+
         visiblePermissionDialogQueue.removeFirst()
     }
 

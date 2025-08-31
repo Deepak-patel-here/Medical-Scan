@@ -33,6 +33,7 @@ class MedicalApiRepository @Inject constructor(private val service: MedicineServ
                         )
                     )
                 )
+
             )
         )
         val apiKey= BuildConfig.API_KEY
