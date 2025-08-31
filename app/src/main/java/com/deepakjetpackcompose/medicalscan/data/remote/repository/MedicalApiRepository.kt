@@ -37,7 +37,7 @@ class MedicalApiRepository @Inject constructor(private val service: MedicineServ
             )
         )
         val apiKey= BuildConfig.API_KEY
-        val response=service.generateContent(request=request, apiKey = "AIzaSyBEcVuM6eftiopBVJTfqc2ZK8vIArga_dk")
+        val response=service.generateContent(request=request, apiKey = "")
         Log.d("api",response.toString())
         var rawJson=response.candidates[0].content.parts[0].text
 
