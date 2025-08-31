@@ -4,18 +4,23 @@ import android.content.Context
 import androidx.room.Room
 import com.deepakjetpackcompose.medicalscan.data.local.database.MedicineDAO
 import com.deepakjetpackcompose.medicalscan.data.local.database.MedicineDatabase
+import com.deepakjetpackcompose.medicalscan.data.remote.repository.CloudinaryRepository
 import com.deepakjetpackcompose.medicalscan.data.remote.repository.MedicalApiRepository
+import com.deepakjetpackcompose.medicalscan.data.remote.service.CloudImageService
 import com.deepakjetpackcompose.medicalscan.data.remote.service.MedicineService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,6 +48,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore= FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
     fun provideMedicineService(): MedicineService{
         val retrofit= Retrofit.Builder()
             .baseUrl("https://generativelanguage.googleapis.com/")
@@ -54,4 +63,24 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMedicalRepo(service: MedicineService): MedicalApiRepository= MedicalApiRepository(service = service)
+
+    @Provides
+    @Singleton
+    fun provideCloudinaryService(): CloudImageService {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)   // increase for uploads
+            .writeTimeout(60, TimeUnit.SECONDS)  // important for large files
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.cloudinary.com/v1_1/dnyyre0cy/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(CloudImageService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCloudinaryRepository(cloudImageService: CloudImageService): CloudinaryRepository = CloudinaryRepository(cloudImageService)
 }

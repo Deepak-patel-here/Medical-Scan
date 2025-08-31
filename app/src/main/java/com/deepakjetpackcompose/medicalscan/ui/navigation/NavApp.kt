@@ -18,9 +18,13 @@ import com.deepakjetpackcompose.medicalscan.ui.screens.SignUpScreen
 import com.deepakjetpackcompose.medicalscan.ui.viewmodel.AuthState
 import com.deepakjetpackcompose.medicalscan.ui.viewmodel.AuthViewModel
 import android.graphics.Bitmap
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.toRoute
 import com.deepakjetpackcompose.medicalscan.ui.screens.FormScreen
 import com.deepakjetpackcompose.medicalscan.ui.screens.MedicineDetailScreen
+import com.deepakjetpackcompose.medicalscan.ui.screens.ProfileScreen
 import com.deepakjetpackcompose.medicalscan.ui.util.scheduleMedicineReminders
 import com.deepakjetpackcompose.medicalscan.ui.viewmodel.MedicalViewModel
 import com.google.mlkit.vision.common.InputImage
@@ -35,6 +39,12 @@ fun NavApp(modifier: Modifier = Modifier,authViewModel: AuthViewModel= hiltViewM
     val authState=authViewModel.authState.collectAsState()
     val start=if(authState.value== AuthState.Success) Routes.Home else Routes.GetStarted
     val context= LocalContext.current
+    val isShow=remember { mutableStateOf(false) }
+    val userInfo=authViewModel.userinfo.collectAsState()
+
+    LaunchedEffect(Unit) {
+        authViewModel.getUserInfo()
+    }
 
 
 
@@ -79,7 +89,9 @@ fun NavApp(modifier: Modifier = Modifier,authViewModel: AuthViewModel= hiltViewM
         composable <Routes.Home>{
             HomeScreen(onScanClick = {
                 navController.navigate(Routes.Camera)
-            }, onProfileClick = {}, onMedicineClick = {id,name,description,dosage,frequencyPerDay,durationDays,startDate,expiryDate,stockCount,nextDoseTime->
+            }, onProfileClick = {
+                navController.navigate(Routes.ProfileScreen)
+            }, onMedicineClick = {id,name,description,dosage,frequencyPerDay,durationDays,startDate,expiryDate,stockCount,nextDoseTime->
                 navController.navigate(Routes.MedicineDetails(
                     id = id,
                     name = name,
@@ -177,6 +189,33 @@ fun NavApp(modifier: Modifier = Modifier,authViewModel: AuthViewModel= hiltViewM
                 onDelete = {id->
                     medicalViewModel.deleteMedicine(id)
                     navController.popBackStack()
+                }
+            )
+        }
+
+
+        composable <Routes.ProfileScreen>{
+            ProfileScreen(
+                userName = userInfo.value.name?:"No Name present",
+                userEmail = userInfo.value.email?:"No email",
+                userImageUrl = userInfo.value.imageUrl,
+                phone = userInfo.value.phone?:"No phone number",
+                location = userInfo.value.location?:"No location",
+                birthday = userInfo.value.birthday?:"No birthday",
+                isDialogShow = isShow.value,
+                onEditClick = {
+                    isShow.value=it
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onLogoutClick = {
+                    authViewModel.logout()
+                },
+                onDismissRequest = {isShow.value=false},
+                onSaveClickedInDialog = {name,email,birthday,phone,location,imageUri->
+
+                    authViewModel.saveUserInfo(context = context, name=name,email=email, birthday = birthday, phone = phone, location = location, imageUri =imageUri ,update = true)
                 }
             )
         }

@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation("com.google.guava:guava:31.1-android")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,34 +75,34 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //room
+
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-// Hilt
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
 
-// Navigation
+    // Navigation
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-// Lottie
+    // Lottie
     implementation(libs.lottie.compose)
 
-// Extended Material Icons
+    // Extended Material Icons
     implementation(libs.material.icons.extended)
 
-// CameraX
+    // CameraX
     implementation(libs.camera.core)
     implementation(libs.camera.camera2)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
 
-// ML Kit
+    // ML Kit
     implementation(libs.mlkit.text.recognition)
 
 
@@ -110,6 +112,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.okhttp)
+
+    //coil
+    implementation(libs.coil.compose)
 
 
 

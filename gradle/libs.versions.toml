@@ -1,6 +1,7 @@
 [versions]
 accompanistPermissions = "0.37.3"
 agp = "8.11.1"
+coilCompose = "2.7.0"
 kotlin = "2.1.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -23,11 +24,13 @@ lottie = "6.6.2"
 materialIcons = "1.7.8"
 camera = "1.3.4"
 mlkitTextRecognition = "16.0.0"
+firebaseFirestore = "26.0.0"
 
 
 [libraries]
 accompanist-permissions-v0373 = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -45,6 +48,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 retrofit={ group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson={ group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson" }
 okhttp={ group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
 
 # Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -76,6 +80,7 @@ camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
 
 # ML Kit
 mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkitTextRecognition" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

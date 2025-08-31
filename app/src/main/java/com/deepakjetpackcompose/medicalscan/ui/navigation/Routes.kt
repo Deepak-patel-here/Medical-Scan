@@ -46,4 +46,7 @@ sealed class Routes {
         val stockCount: Int? = null,
         val nextDoseTime: Long? = null
     )
+
+    @Serializable
+    data object ProfileScreen: Routes()
 }
